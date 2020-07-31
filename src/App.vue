@@ -1,14 +1,12 @@
 <template>
   <div id="app">
     <div class="fixed">
-      <header class="header">
-        <h1 class="titulo-principal">Relatório de Operadoras</h1>
-      </header>
+      <Header/>
 
       <div class="container filtros">
-        <button @click="getTodasOperadoras()" class="button todos">Todas</button>
+        <Button @click="getTodasOperadoras()" button todos texto="Todas"/>
 
-        <select
+        <select class="select select01"
           @change="getOperadorasPorModalidade()"
           v-model="modalidadeSelecionada"
           name="modalidade"
@@ -22,7 +20,7 @@
           >{{modalidade}}</option>
         </select>
 
-        <select
+        <select class="select select01"
           @change="getOperadorasPorCidade()"
           v-model="cidadeSelecionada"
           name="cidade"
@@ -32,7 +30,7 @@
           <option v-for="cidade in getCidades" :key="cidade" :value="cidade">{{cidade}}</option>
         </select>
 
-        <select
+        <select class="select select01"
           @change="getOperadorasPorEstado()"
           v-model="estadoSelecionado"
           name="estado"
@@ -129,7 +127,11 @@
 </template>
 
 <script>
+import Header from './components/Header';
+import Button from './components/Button';
+
 export default {
+  components: {Header, Button},
   data: () => {
     return {
       operadoras: {},
@@ -256,6 +258,24 @@ export default {
 </script>
 
 <style>
+:root{
+  --cor01: #202020ee;
+  --cor02: #e4e3e3;
+  --cor03: #EF8354;
+  --cor04: #1b1b1b;
+  --cor05: #e4e1e1;
+  --cor06: #747272;
+  --cor07: #33363d;
+
+  --font-size01: .8em;
+  --font-size02: 1.1em;
+  --font-size03: 1.5em;
+
+  --height-buttons-selects: 40px;
+
+  --border-radius: 5px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -272,21 +292,8 @@ export default {
 .fixed {
   position: fixed;
   width: 100%;
-  background-color: #131313;
+  background-color: var(--cor01);
   z-index: 2;
-}
-
-.header {
-  padding: 1% 0;
-  margin-bottom: 50px;
-}
-
-.titulo-principal {
-  color: #ffffff;
-  text-align: center;
-  font-size: 1.5em;
-  text-transform: uppercase;
-  font-weight: 400;
 }
 
 .filtros {
@@ -296,33 +303,18 @@ export default {
   align-items: center;
 }
 
-.button,
-select {
-  border-radius: 5px;
+.select{
+  border-radius: var(--border-radius);
   padding: 5px 10px;
   outline: none;
   border: none;
-  cursor: pointer;
-  font-size: 1.1em;
+  font-size: var(--font-size02);
+  height: var(--height-buttons-selects);
 }
 
-.button.todos,
-select {
-  display: block;
-  background-color: #f0ecec;
-  color: #131212;
-  width: 150px;
-  height: 40px;
-  text-align: center;
-}
-
-select {
-  padding-left: 10px;
-  width: 200px;
-}
-
-#modalidade {
-  width: 350px;
+.select01{
+  width: 340px;
+  background-color: var(--cor02);
 }
 
 main {
@@ -339,37 +331,32 @@ table {
   margin-right: auto;
 }
 
-tr,
 thead {
-  border: 1px solid #919090;
+  background-color: var(--cor07);
+  color: var(--cor02);
+  font-size: var(--font-size02);
+}
+
+tr,
+thead, td {
+  border: 1px solid var(--cor07);
 }
 
 tr {
-  color: #555454;
-  background-color: #e9e9e9;
-  font-size: 0.8em;
+  color: var(--cor04);
+  background-color: var(--cor05);
+  font-size: var(--font-size01);
   transition: background-color 1s ease-in-out, color 1.2s ease-in-out;
 }
 
 tr:hover {
-  color: #fff;
-  background-color: #706f6f;
+  color:var(--cor02);
+  background-color: var(--cor06);
 }
 
 td,
 th {
   padding: 5px;
-}
-
-td {
-  border: 1px solid #919090;
-  height: 20px;
-}
-
-th {
-  background-color: #a19f9f;
-  color: #fff;
-  font-size: 0.9em;
 }
 
 .ver-mais img {
