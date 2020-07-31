@@ -66,7 +66,7 @@
               <td>{{operadora["UF"]}}</td>
               <td>
                 <a class="ver-mais" href="#">
-                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                 <i class="fa fa-search" aria-hidden="true"></i>
                 </a>
               </td>
             </tr>
@@ -82,7 +82,7 @@
               <td>{{operadora["UF"]}}</td>
               <td>
                 <a class="ver-mais" href="#">
-                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                 <i class="fa fa-search" aria-hidden="true"></i>
                 </a>
               </td>
             </tr>
@@ -98,7 +98,7 @@
               <td>{{operadora["UF"]}}</td>
               <td>
                 <a class="ver-mais" href="#">
-                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                 <i class="fa fa-search" aria-hidden="true"></i>
                 </a>
               </td>
             </tr>
@@ -114,7 +114,7 @@
               <td>{{operadora["UF"]}}</td>
               <td>
                 <a class="ver-mais" href="#">
-                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                 <i class="fa fa-search" aria-hidden="true"></i>
                 </a>
               </td>
             </tr>
@@ -128,6 +128,8 @@
 
 <script>
 import Header from './components/Header';
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/js/all.js';
 
 export default {
   components: {Header},
@@ -365,9 +367,13 @@ tr {
   transition: background-color 1s ease-in-out, color 1.2s ease-in-out;
 }
 
-tr:hover {
+tr:hover{
   color:var(--cor02);
   background-color: var(--cor06);
+}
+
+tr:hover .ver-mais{
+  color:var(--cor02);
 }
 
 td,
@@ -375,7 +381,11 @@ th {
   padding: 5px;
 }
 
-.ver-mais img {
-  width: 15px;
+.ver-mais{
+  color: var(--cor04);
+}
+
+.ver-mais i{
+  font-size: var(--font-size02);
 }
 </style>
