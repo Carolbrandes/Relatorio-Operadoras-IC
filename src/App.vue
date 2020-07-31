@@ -4,7 +4,7 @@
       <Header/>
 
       <div class="container filtros">
-        <Button @click="getTodasOperadoras()" button todos texto="Todas"/>
+        <button @click="getTodasOperadoras()" class="button todos">Todas</button>
 
         <select class="select select01"
           @change="getOperadorasPorModalidade()"
@@ -128,10 +128,9 @@
 
 <script>
 import Header from './components/Header';
-import Button from './components/Button';
 
 export default {
-  components: {Header, Button},
+  components: {Header},
   data: () => {
     return {
       operadoras: {},
@@ -301,6 +300,23 @@ export default {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.button{
+    display: block;
+    border-radius: var(--border-radius);
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size02);
+    height: var(--height-buttons-selects);
+}
+
+.todos{
+    background-color:var(--cor03);
+    color: var(--cor02);
+    width: 200px;
 }
 
 .select{
