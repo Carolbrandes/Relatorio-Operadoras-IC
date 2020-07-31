@@ -8,14 +8,18 @@
       <div class="container filtros">
         <button class="button todos">Todas</button>
 
-        <select v-model="modalidadeSelecionada" name="modalidade" id="modalidade">
+        <select @change="getOperadorasPorModalidade()" v-model="modalidadeSelecionada" name="modalidade" id="modalidade">
           <option value="modalidade">Por Modalidade</option>
-           <option v-for="modalidade in getModalidades" :key="modalidade" :value="modalidade">{{modalidade}}</option> 
+          <option
+            v-for="modalidade in getModalidades"
+            :key="modalidade"
+            :value="modalidade"
+          >{{modalidade}}</option>
         </select>
 
         <select v-model="cidadeSelecionada" name="cidade" id="cidade">
           <option value="cidade">Por Cidade</option>
-          <option v-for="cidade in getCidades" :key="cidade" :value="cidade">{{cidade}}</option>  
+          <option v-for="cidade in getCidades" :key="cidade" :value="cidade">{{cidade}}</option>
         </select>
 
         <select v-model="estadoSelecionado" name="estado" id="estado">
@@ -30,6 +34,8 @@
         <p>{{modalidadeSelecionada}}</p>
         <p>{{cidadeSelecionada}}</p>
         <p>{{estadoSelecionado}}</p>
+        <p>Mostrar todas: {{mostrarTodasOperadoras}}</p>
+        <p>Modalidade: {{mostrarOperadoraPorModalidade}}</p>
         <table>
           <thead>
             <th>Nº</th>
@@ -41,7 +47,7 @@
             <th>Mais informações</th>
           </thead>
 
-          <tbody>
+          <tbody v-if="mostrarTodasOperadoras">
             <tr v-for="(operadora, index) in operadoras" :key="operadora.CNPJ">
               <td>{{index+1}}</td>
               <td>{{operadora["Razão Social"]}}</td>
@@ -50,10 +56,29 @@
               <td>{{operadora["Cidade"]}}</td>
               <td>{{operadora["UF"]}}</td>
               <td>
-                <a class="ver-mais" href="#"><img src="/images/ver-mais.svg" alt="ver mais"></a>
+                <a class="ver-mais" href="#">
+                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                </a>
               </td>
             </tr>
           </tbody>
+
+            <tbody v-if="mostrarOperadoraPorModalidade">
+            <tr v-for="(operadora, index) in operadorasPorModalidade" :key="operadora.CNPJ">
+              <td>{{index+1}}</td>
+              <td>{{operadora["Razão Social"]}}</td>
+              <td>{{operadora["CNPJ"]}}</td>
+              <td>{{operadora["Modalidade"]}}</td>
+              <td>{{operadora["Cidade"]}}</td>
+              <td>{{operadora["UF"]}}</td>
+              <td>
+                <a class="ver-mais" href="#">
+                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                </a>
+              </td>
+            </tr>
+          </tbody>
+
         </table>
       </div>
     </main>
@@ -61,14 +86,20 @@
 </template>
 
 <script>
-
 export default {
   data: () => {
     return {
       operadoras: {},
       modalidadeSelecionada: "modalidade",
       cidadeSelecionada: "cidade",
-      estadoSelecionado: "estado"
+      estadoSelecionado: "estado",
+
+      operadorasPorModalidade: {},
+
+      mostrarTodasOperadoras: true,
+      mostrarOperadoraPorModalidade: false,
+      mostrarOperadoraPorCidade: false,
+      mostrarOperadoraPorEstado: false,
     };
   },
 
@@ -79,40 +110,56 @@ export default {
         .then((resp) => (this.operadoras = resp));
     },
 
-    filtrarCampos(chaveCampo){
-       let campo = Array.from(this.operadoras);
-      campo = campo.map(operadora => operadora[chaveCampo]);
+    filtrarCampos(chaveCampo) {
+      let campo = Array.from(this.operadoras);
+      campo = campo.map((operadora) => operadora[chaveCampo]);
       campo = Object.values(campo);
 
       let novaLista = [];
 
-      campo.forEach(c => {
-        if(!novaLista.includes(c)){
-          novaLista.push(c)
+      campo.forEach((c) => {
+        if (!novaLista.includes(c)) {
+          novaLista.push(c);
         }
-      })
+      });
 
       return novaLista.sort();
-    }
+    },
+
+    getOperadorasPorFiltro(filtro, select) {
+      return this.operadoras.filter(
+        (operadora) => operadora[filtro] === select
+      );
+    },
+
+    getOperadorasPorModalidade() {
+      this.mostrarTodasOperadoras = false;
+      this.mostrarOperadoraPorCidade = false;
+      this.mostrarOperadoraPorEstado = false;
+      this.mostrarOperadoraPorModalidade = true;
+      this.operadorasPorModalidade = this.getOperadorasPorFiltro(
+        "Modalidade",
+        this.modalidadeSelecionada
+      );
+    },
   },
 
-  computed:{
-    getCidades(){
+  computed: {
+    getCidades() {
       return this.filtrarCampos("Cidade");
     },
 
-     getEstados(){
+    getEstados() {
       return this.filtrarCampos("UF");
     },
 
-    getModalidades(){
+    getModalidades() {
       return this.filtrarCampos("Modalidade");
-    }
-
+    },
   },
 
   mounted() {
-    this.getOperadoras()
+    this.getOperadoras();
   },
 };
 </script>
@@ -183,11 +230,11 @@ select {
   width: 200px;
 }
 
-#modalidade{
+#modalidade {
   width: 350px;
 }
 
-main{
+main {
   position: relative;
   top: 250px;
 }
@@ -201,39 +248,40 @@ table {
   margin-right: auto;
 }
 
-tr, thead{
+tr,
+thead {
   border: 1px solid #919090;
 }
 
-tr{
+tr {
   color: #555454;
   background-color: #e9e9e9;
   font-size: 0.8em;
-  transition: background-color 1s ease-in-out, color 1.2s ease-in-out
+  transition: background-color 1s ease-in-out, color 1.2s ease-in-out;
 }
 
-tr:hover{
+tr:hover {
   color: #fff;
   background-color: #706f6f;
 }
 
-td, th{
+td,
+th {
   padding: 5px;
 }
 
-td{
+td {
   border: 1px solid #919090;
   height: 20px;
 }
 
-th{
+th {
   background-color: #a19f9f;
   color: #fff;
   font-size: 0.9em;
 }
 
-.ver-mais img{
+.ver-mais img {
   width: 15px;
 }
-
 </style>
