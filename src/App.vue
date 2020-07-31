@@ -6,27 +6,30 @@
       </header>
 
       <div class="container filtros">
-        <button @click="getOperadoras" class="button todos">Todas</button>
+        <button class="button todos">Todas</button>
 
-        <select name="modalidade" id="modalidade">
-          <option>Por Modalidade</option>
-           <option v-for="modalidade in getModalidades" :key="modalidade" value="modalidade">{{modalidade}}</option> 
+        <select v-model="modalidadeSelecionada" name="modalidade" id="modalidade">
+          <option value="modalidade">Por Modalidade</option>
+           <option v-for="modalidade in getModalidades" :key="modalidade" :value="modalidade">{{modalidade}}</option> 
         </select>
 
-        <select name="cidade" id="cidade">
-          <option>Por Cidade</option>
-          <option v-for="cidade in getCidades" :key="cidade" value="cidade">{{cidade}}</option>  
+        <select v-model="cidadeSelecionada" name="cidade" id="cidade">
+          <option value="cidade">Por Cidade</option>
+          <option v-for="cidade in getCidades" :key="cidade" :value="cidade">{{cidade}}</option>  
         </select>
 
-        <select name="estado" id="estado">
-          <option>Por Estado</option>
-          <option v-for="estado in getEstados" :key="estado" value="estado">{{estado}}</option>
+        <select v-model="estadoSelecionado" name="estado" id="estado">
+          <option value="estado">Por Estado</option>
+          <option v-for="estado in getEstados" :key="estado" :value="estado">{{estado}}</option>
         </select>
       </div>
     </div>
 
     <main>
       <div class="container">
+        <p>{{modalidadeSelecionada}}</p>
+        <p>{{cidadeSelecionada}}</p>
+        <p>{{estadoSelecionado}}</p>
         <table>
           <thead>
             <th>Nº</th>
@@ -63,7 +66,9 @@ export default {
   data: () => {
     return {
       operadoras: {},
-      cidades: null
+      modalidadeSelecionada: "modalidade",
+      cidadeSelecionada: "cidade",
+      estadoSelecionado: "estado"
     };
   },
 
@@ -176,6 +181,10 @@ select {
 select {
   padding-left: 10px;
   width: 200px;
+}
+
+#modalidade{
+  width: 350px;
 }
 
 main{
