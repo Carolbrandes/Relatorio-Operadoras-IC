@@ -6,9 +6,14 @@
       </header>
 
       <div class="container filtros">
-        <button class="button todos">Todas</button>
+        <button @click="getTodasOperadoras()" class="button todos">Todas</button>
 
-        <select @change="getOperadorasPorModalidade()" v-model="modalidadeSelecionada" name="modalidade" id="modalidade">
+        <select
+          @change="getOperadorasPorModalidade()"
+          v-model="modalidadeSelecionada"
+          name="modalidade"
+          id="modalidade"
+        >
           <option value="modalidade">Por Modalidade</option>
           <option
             v-for="modalidade in getModalidades"
@@ -17,12 +22,22 @@
           >{{modalidade}}</option>
         </select>
 
-        <select v-model="cidadeSelecionada" name="cidade" id="cidade">
+        <select
+          @change="getOperadorasPorCidade()"
+          v-model="cidadeSelecionada"
+          name="cidade"
+          id="cidade"
+        >
           <option value="cidade">Por Cidade</option>
           <option v-for="cidade in getCidades" :key="cidade" :value="cidade">{{cidade}}</option>
         </select>
 
-        <select v-model="estadoSelecionado" name="estado" id="estado">
+        <select
+          @change="getOperadorasPorEstado()"
+          v-model="estadoSelecionado"
+          name="estado"
+          id="estado"
+        >
           <option value="estado">Por Estado</option>
           <option v-for="estado in getEstados" :key="estado" :value="estado">{{estado}}</option>
         </select>
@@ -31,11 +46,7 @@
 
     <main>
       <div class="container">
-        <p>{{modalidadeSelecionada}}</p>
-        <p>{{cidadeSelecionada}}</p>
-        <p>{{estadoSelecionado}}</p>
-        <p>Mostrar todas: {{mostrarTodasOperadoras}}</p>
-        <p>Modalidade: {{mostrarOperadoraPorModalidade}}</p>
+
         <table>
           <thead>
             <th>Nº</th>
@@ -63,8 +74,40 @@
             </tr>
           </tbody>
 
-            <tbody v-if="mostrarOperadoraPorModalidade">
+          <tbody v-if="mostrarOperadoraPorModalidade">
             <tr v-for="(operadora, index) in operadorasPorModalidade" :key="operadora.CNPJ">
+              <td>{{index+1}}</td>
+              <td>{{operadora["Razão Social"]}}</td>
+              <td>{{operadora["CNPJ"]}}</td>
+              <td>{{operadora["Modalidade"]}}</td>
+              <td>{{operadora["Cidade"]}}</td>
+              <td>{{operadora["UF"]}}</td>
+              <td>
+                <a class="ver-mais" href="#">
+                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                </a>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody v-if="mostrarOperadoraPorCidade">
+            <tr v-for="(operadora, index) in operadorasPorCidade" :key="operadora.CNPJ">
+              <td>{{index+1}}</td>
+              <td>{{operadora["Razão Social"]}}</td>
+              <td>{{operadora["CNPJ"]}}</td>
+              <td>{{operadora["Modalidade"]}}</td>
+              <td>{{operadora["Cidade"]}}</td>
+              <td>{{operadora["UF"]}}</td>
+              <td>
+                <a class="ver-mais" href="#">
+                  <img src="/images/ver-mais.svg" alt="ver mais" />
+                </a>
+              </td>
+            </tr>
+          </tbody>
+
+           <tbody v-if="mostrarOperadoraPorEstado">
+            <tr v-for="(operadora, index) in operadorasPorEstado" :key="operadora.CNPJ">
               <td>{{index+1}}</td>
               <td>{{operadora["Razão Social"]}}</td>
               <td>{{operadora["CNPJ"]}}</td>
@@ -95,6 +138,8 @@ export default {
       estadoSelecionado: "estado",
 
       operadorasPorModalidade: {},
+      operadorasPorCidade: {},
+      operadorasPorEstado: {},
 
       mostrarTodasOperadoras: true,
       mostrarOperadoraPorModalidade: false,
@@ -137,11 +182,57 @@ export default {
       this.mostrarOperadoraPorCidade = false;
       this.mostrarOperadoraPorEstado = false;
       this.mostrarOperadoraPorModalidade = true;
+
+      this.cidadeSelecionada = "cidade";
+      this.estadoSelecionado = "estado";
+
       this.operadorasPorModalidade = this.getOperadorasPorFiltro(
         "Modalidade",
         this.modalidadeSelecionada
       );
     },
+
+    getOperadorasPorCidade() {
+      this.mostrarTodasOperadoras = false;
+      this.mostrarOperadoraPorCidade = true;
+      this.mostrarOperadoraPorEstado = false;
+      this.mostrarOperadoraPorModalidade = false;
+
+      this.modalidadeSelecionada = "modalidade";
+      this.estadoSelecionado = "estado";
+
+      this.operadorasPorCidade = this.getOperadorasPorFiltro(
+        "Cidade",
+        this.cidadeSelecionada
+      );
+    },
+
+    getOperadorasPorEstado() {
+      this.mostrarTodasOperadoras = false;
+      this.mostrarOperadoraPorCidade = false;
+      this.mostrarOperadoraPorEstado = true;
+      this.mostrarOperadoraPorModalidade = false;
+
+      this.modalidadeSelecionada = "modalidade";
+      this.cidadeSelecionada = "cidade";
+
+      this.operadorasPorEstado = this.getOperadorasPorFiltro(
+        "UF",
+        this.estadoSelecionado
+      );
+    },
+
+    getTodasOperadoras(){
+      // Object.assign(this.$data, this.$options.data())
+      this.mostrarTodasOperadoras = true;
+      this.mostrarOperadoraPorCidade = false;
+      this.mostrarOperadoraPorEstado = false;
+      this.mostrarOperadoraPorModalidade = false;
+
+      this.modalidadeSelecionada = "modalidade";
+      this.cidadeSelecionada = "cidade";
+      this.estadoSelecionado = "estado";
+    }
   },
 
   computed: {
