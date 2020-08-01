@@ -6,12 +6,7 @@
       <div class="container filtros">
         <button @click="getTodasOperadoras()" class="button todos">Todas</button>
 
-        <select class="select select01"
-          @change="getOperadorasPorModalidade()"
-          v-model="modalidadeSelecionada"
-          name="modalidade"
-          id="modalidade"
-        >
+        <select class="select select01" @change="getOperadorasPorModalidade()" v-model="modalidadeSelecionada" name="modalidade" id="modalidade">
           <option value="modalidade">Por Modalidade</option>
           <option
             v-for="modalidade in getModalidades"
@@ -44,9 +39,13 @@
 
     <main>
       <div class="container">
-        <h2 v-if="mostrarOperadoraPorModalidade" class="tituloFiltro">{{modalidadeSelecionada}}</h2>
-        <h2 v-if="mostrarOperadoraPorCidade" class="tituloFiltro">{{cidadeSelecionada}}</h2>
-        <h2 v-if="mostrarOperadoraPorEstado" class="tituloFiltro">{{estadoSelecionado}}</h2>
+        <!-- <p>modalidadeSelecionada: {{modalidadeSelecionada}}</p>
+        <p>cidadeSelecionada: {{cidadeSelecionada}}</p>
+        <p>estadoSelecionado: {{estadoSelecionado}}</p>
+          -->
+        <h2 v-if="mostrarOperadoraPorModalidade" class="tituloFiltro">Modalidade: {{modalidadeSelecionada}}</h2>
+        <h2 v-if="mostrarOperadoraPorCidade" class="tituloFiltro">Cidade: {{cidadeSelecionada}}</h2>
+        <h2 v-if="mostrarOperadoraPorEstado" class="tituloFiltro">Estado: {{estadoSelecionado}}</h2>
         <table>
           <thead>
             <th>Nº</th>
@@ -246,7 +245,7 @@ export default {
   --cor06: #747272;
   --cor07: #33363d;
   --font-size01: .8em;
-  --font-size02: 1.1em;
+  --font-size02: 1em;
   --font-size03: 1.5em;
   --font-size04: 1.3em;
   --height-buttons-selects: 40px;
@@ -288,24 +287,28 @@ export default {
 .button.todos{
     background-color:var(--cor03);
     color: var(--cor02);
-    width: 200px;
+    width: 10%;
 }
 .select{
   border-radius: var(--border-radius);
   padding: 5px 10px;
   outline: none;
   border: none;
-  font-size: var(--font-size02);
+  font-size: var(--font-size01);
   height: var(--height-buttons-selects);
 }
 .select01{
-  width: 340px;
   background-color: var(--cor02);
 }
 main {
   position: relative;
   top: 250px;
 }
+
+.tituloFiltro{
+  display: none;
+}
+
 table {
   border-collapse: collapse;
   text-align: center;
@@ -349,19 +352,16 @@ th {
 
 @media screen and (max-width: 768px){
     main{
-      top:370px;
+      top:400px;
     }
 
     .filtros{
       flex-direction: column;
     }
 
-    .select01{
-      margin-bottom: 10px;
-    }
-
-    .button.todos{
-      margin-bottom: 10px;
+    .button.todos, .select01{
+      margin-bottom: 20px;
+      width: 30%;
     }
 
     .ocultarDispMoveis{
@@ -369,9 +369,18 @@ th {
     }
 
     .tituloFiltro{
+      display: block;
       color: var(--cor01);
       font-size: var(--font-size04);
       text-align: center;
+      margin: 40px 0;
+    }
+}
+
+@media screen and (max-width: 414px){
+  .button.todos, .select01{
+      width: 90%;
+      min-width: 400px;
     }
 }
 </style>
