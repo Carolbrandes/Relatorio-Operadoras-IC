@@ -229,6 +229,9 @@ export default {
     getModalidades() {
       return this.filtrarCampos("Modalidade");
     },
+  },
+  mounted(){
+    this.getOperadoras();
   }
 };
 </script>
