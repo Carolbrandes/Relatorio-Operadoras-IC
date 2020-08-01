@@ -257,7 +257,7 @@ export default {
       return this.filtrarCampos("Modalidade");
     },
   },
-  mounted(){
+  created(){
     this.getOperadoras();
   }
 };
