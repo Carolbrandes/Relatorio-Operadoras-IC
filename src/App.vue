@@ -39,10 +39,7 @@
 
     <main>
       <div class="container">
-        <!-- <p>modalidadeSelecionada: {{modalidadeSelecionada}}</p>
-        <p>cidadeSelecionada: {{cidadeSelecionada}}</p>
-        <p>estadoSelecionado: {{estadoSelecionado}}</p>
-          -->
+      
         <h2 v-if="mostrarOperadoraPorModalidade" class="tituloFiltro">Modalidade: {{modalidadeSelecionada}}</h2>
         <h2 v-if="mostrarOperadoraPorCidade" class="tituloFiltro">Cidade: {{cidadeSelecionada}}</h2>
         <h2 v-if="mostrarOperadoraPorEstado" class="tituloFiltro">Estado: {{estadoSelecionado}}</h2>
@@ -66,7 +63,7 @@
               <td class="ocultarDispMoveis">{{operadora["Cidade"]}}</td>
               <td class="ocultarDispMoveis">{{operadora["UF"]}}</td>
               <td>
-                <a class="ver-mais" href="#">
+                <a @click="getMaisInformacoesOperadora(operadora.CNPJ)" class="ver-mais" href="#">
                  <i class="fa fa-search" aria-hidden="true"></i>
                 </a>
               </td>
@@ -120,8 +117,30 @@
               </td>
             </tr>
           </tbody>
-
         </table>
+
+        <div v-show="abrirModal" class="overflow-modal"></div>
+        <div v-show="abrirModal" class="modal">
+          <button @click="fecharModal()" class="botao-fechar-modal">X</button>
+          <div>
+            <p>Registro ANS: <span class="destaque">{{operadoraEspecifica["Registro ANS"]}}</span> </p>
+            <p>Data Registro ANS: <span class="destaque">{{operadoraEspecifica["Data Registro ANS"]}}</span> </p>
+            <p>Razão Social: <span class="destaque">{{operadoraEspecifica["Razão Social"]}}</span> </p>
+            <p v-if="operadoraEspecifica['Nome Fantasia']">Nome Fantasia: <span class="destaque">{{operadoraEspecifica["Nome Fantasia"]}}</span> </p>
+            <p>CNPJ: <span class="destaque">{{operadoraEspecifica["CNPJ"]}}</span> </p>
+            <p>Modalidade: <span class="destaque">{{operadoraEspecifica["Modalidade"]}}</span> </p>
+            <p>Representante: <span class="destaque">{{operadoraEspecifica["Representante"]}}</span> </p>
+            <p>Cargo Representante: <span class="destaque">{{operadoraEspecifica["Cargo Representante"]}}</span> </p>
+            <p>Telefone: <span class="destaque">({{operadoraEspecifica["DDD"]}}) {{operadoraEspecifica["Telefone"]}}</span> </p>
+            <p v-if="operadoraEspecifica['Fax']">Fax: <span class="destaque">{{operadoraEspecifica["Fax"]}}</span> </p>
+            <p>Endereço eletrônico: <span class="destaque">{{operadoraEspecifica["Endereço eletrônico"]}}</span> </p>
+            <p>Endereço: <span class="destaque"> {{operadoraEspecifica["Logradouro"]}} Nº{{operadoraEspecifica["Número"]}} <span v-if="operadoraEspecifica['Complemento']"> - {{operadoraEspecifica["Complemento"]}}</span></span> </p>
+            <p>Bairro: <span class="destaque">{{operadoraEspecifica["Bairro"]}}</span> </p>
+            <p>CEP: <span class="destaque">{{operadoraEspecifica["CEP"]}}</span> </p>
+            <p>Cidade: <span class="destaque">{{operadoraEspecifica["Cidade"]}}</span> Estado: <span class="destaque">{{operadoraEspecifica["UF"]}}</span> </p>
+          </div>
+        </div>
+
       </div>
     </main>
   </div>
@@ -142,10 +161,12 @@ export default {
       operadorasPorModalidade: {},
       operadorasPorCidade: {},
       operadorasPorEstado: {},
+      operadoraEspecifica: {},
       mostrarTodasOperadoras: true,
       mostrarOperadoraPorModalidade: false,
       mostrarOperadoraPorCidade: false,
       mostrarOperadoraPorEstado: false,
+      abrirModal: false
     };
   },
   methods: {
@@ -208,7 +229,6 @@ export default {
       );
     },
     getTodasOperadoras(){
-      // Object.assign(this.$data, this.$options.data())
       this.mostrarTodasOperadoras = true;
       this.mostrarOperadoraPorCidade = false;
       this.mostrarOperadoraPorEstado = false;
@@ -216,7 +236,15 @@ export default {
       this.modalidadeSelecionada = "modalidade";
       this.cidadeSelecionada = "cidade";
       this.estadoSelecionado = "estado";
+    },
+    getMaisInformacoesOperadora(cnpj){
+      this.abrirModal = true;
+      this.operadoraEspecifica = this.operadoras.find(operadora => operadora.CNPJ === cnpj)
+    },
+    fecharModal(){
+      this.abrirModal = false;
     }
+
   },
   computed: {
     getCidades() {
@@ -326,11 +354,13 @@ tr,
 thead, td {
   border: 1px solid var(--cor07);
 }
+
 tr {
   color: var(--cor04);
   background-color: var(--cor05);
   font-size: var(--font-size01);
   transition: background-color 1s ease-in-out, color 1.2s ease-in-out;
+  height: 45px;
 }
 tr:hover{
   color:var(--cor02);
@@ -345,9 +375,65 @@ th {
 }
 .ver-mais{
   color: var(--cor04);
+  transition: color 1.5s ease-in-out
 }
 .ver-mais i{
   font-size: var(--font-size02);
+}
+
+.overflow-modal{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #5c5c5cdc;
+  z-index: 3;
+}
+
+.modal{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 400px;
+  padding: 2%;
+  background-color: var(--cor04);
+  color: var(--cor02);
+  z-index: 4;
+  overflow-y: scroll;
+  border: 3px solid var(--cor03);
+  border-radius: var(--border-radius);
+}
+
+.modal div{
+  margin-left: 50px;
+}
+
+.modal p{
+  margin-bottom: 10px;
+  width: 90%;
+}
+
+.botao-fechar-modal{
+  display: block;
+  border: none;
+  outline: none;
+  background-color: var(--cor02);
+  width: 40px;
+  height: 40px;
+  padding: 1%;
+  font-size: var(--font-size03);
+  color: var(--cor03);
+  position: fixed;
+  left: 0px;
+  top: 0;
+  cursor: pointer; 
+}
+
+.destaque{
+  color: var(--cor03);
 }
 
 @media screen and (max-width: 768px){
