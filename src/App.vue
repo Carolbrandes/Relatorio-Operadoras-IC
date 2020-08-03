@@ -64,7 +64,7 @@
               <td class="ocultarDispMoveis">{{operadora["UF"]}}</td>
               <td>
                 <a @click="getMaisInformacoesOperadora(operadora.CNPJ)" class="ver-mais" href="#">
-                 <i class="fa fa-search" aria-hidden="true"></i>
+                &#x2315;
                 </a>
               </td>
             </tr>
@@ -79,8 +79,8 @@
               <td class="ocultarDispMoveis">{{operadora["Cidade"]}}</td>
               <td class="ocultarDispMoveis">{{operadora["UF"]}}</td>
               <td>
-                <a class="ver-mais" href="#">
-                 <i class="fa fa-search" aria-hidden="true"></i>
+                <a @click="getMaisInformacoesOperadora(operadora.CNPJ)" class="ver-mais" href="#">
+                &#x2315;
                 </a>
               </td>
             </tr>
@@ -95,8 +95,8 @@
               <td class="ocultarDispMoveis">{{operadora["Cidade"]}}</td>
               <td class="ocultarDispMoveis">{{operadora["UF"]}}</td>
               <td>
-                <a class="ver-mais" href="#">
-                 <i class="fa fa-search" aria-hidden="true"></i>
+                <a @click="getMaisInformacoesOperadora(operadora.CNPJ)" class="ver-mais" href="#">
+                &#x2315;
                 </a>
               </td>
             </tr>
@@ -111,8 +111,8 @@
               <td class="ocultarDispMoveis">{{operadora["Cidade"]}}</td>
               <td class="ocultarDispMoveis">{{operadora["UF"]}}</td>
               <td>
-                <a class="ver-mais" href="#">
-                 <i class="fa fa-search" aria-hidden="true"></i>
+                <a @click="getMaisInformacoesOperadora(operadora.CNPJ)" class="ver-mais" href="#">
+                &#x2315;
                 </a>
               </td>
             </tr>
@@ -148,8 +148,7 @@
 
 <script>
 import Header from './components/Header';
-import '@fortawesome/fontawesome-free/css/all.css';
-import '@fortawesome/fontawesome-free/js/all.js';
+
 export default {
   components: {Header},
   data: () => {
@@ -276,26 +275,35 @@ export default {
   --font-size02: 1em;
   --font-size03: 1.5em;
   --font-size04: 1.3em;
+  --font-size05: 2em;
   --height-buttons-selects: 40px;
   --border-radius: 5px;
 }
+
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
 }
+
+/* ALIGN CONTENT */
 .container {
   width: 95%;
   margin-left: auto;
   margin-right: auto;
 }
+
+/* HEADER */
 .fixed {
   position: fixed;
   width: 100%;
   background-color: var(--cor01);
   z-index: 2;
 }
+
+/* FILTERS */
 .filtros {
   margin-bottom: 50px;
   display: flex;
@@ -328,15 +336,20 @@ export default {
 .select01{
   background-color: var(--cor02);
 }
+
+
+/* MAIN CONTENT */
 main {
   position: relative;
   top: 250px;
 }
 
+/* TITLE FOR TABLET AND MOBILE */
 .tituloFiltro{
   display: none;
 }
 
+/* OPERATORS TABLE */
 table {
   border-collapse: collapse;
   text-align: center;
@@ -375,12 +388,13 @@ th {
 }
 .ver-mais{
   color: var(--cor04);
-  transition: color 1.5s ease-in-out
-}
-.ver-mais i{
-  font-size: var(--font-size02);
+  transition: color 1.5s ease-in-out;
+  font-size: var(--font-size05);
+  text-decoration: none;
 }
 
+
+/* MODAL */
 .overflow-modal{
   position: fixed;
   top: 0;
