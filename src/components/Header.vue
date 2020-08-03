@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-   <Titulo texto="Relatório de Operadoras" tituloPrincipal />
+   <Titulo texto="Operadoras Ativas ANS" tituloPrincipal />
   </header>
 </template>
 
